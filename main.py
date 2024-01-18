@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox,filedialog
 
 def validate_num_input(num):  # allows the user to input numbers only in coordinates field  
     if num.isdigit():
@@ -11,6 +11,14 @@ def validate_num_input(num):  # allows the user to input numbers only in coordin
 
 def guide_clicked(event):
     messagebox.showinfo("GUIDE","Open the Sample Certificate in the Paint and Hover on the area where you want to write the name.\nOn the bottom left, you will see the co-ordinates(x,y)")
+
+def browse_excel_file():
+    users_file_path = filedialog.askopenfilename(title="Select a File",filetypes=[("Excel Files", "*.xlsx;*.xls")])
+    excel_entry_var.set(users_file_path)
+
+def browse_jpg_file():
+    users_file_path = filedialog.askopenfilename(title="Select a File", filetypes=[("JPG Files", "*.jpg")])
+    cert_entry_var.set(users_file_path)
 
 root = Tk()
 root.title("Certificate Generator")
@@ -36,7 +44,7 @@ excel_entry_var = StringVar()
 excel_entry_field = Entry(excel_browse_frame,width=40,font=("Helvetica", 12),bg ="white",textvariable=excel_entry_var)
 excel_entry_field.grid(row=1, column=0,padx=10)
 
-excel_browse_button = Button(excel_browse_frame, text="Browse",font =("Helvetica",12), bg="#003366", fg="white")
+excel_browse_button = Button(excel_browse_frame, text="Browse",font =("Helvetica",12), bg="#003366", fg="white",command=browse_excel_file)
 excel_browse_button.grid(row=1, column=1,padx=10,sticky = W)
 
 # gets the path of sample of certificate
@@ -49,7 +57,7 @@ cert_entry_var = StringVar()
 cert_entry_field = Entry(cert_browse_frame, width=40, font=("Helvetica", 12), bg="white", textvariable=cert_entry_var)
 cert_entry_field.grid(row=1, column=0, padx=10)
 
-cert_browse_button = Button(cert_browse_frame, text="Browse", font=("Helvetica", 12), bg="#003366", fg="white")
+cert_browse_button = Button(cert_browse_frame, text="Browse", font=("Helvetica", 12), bg="#003366", fg="white",command = browse_jpg_file)
 cert_browse_button.grid(row=1, column=1, padx=10, sticky=W)
 
 #get the input of corodinates
