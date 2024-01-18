@@ -52,6 +52,7 @@ cert_entry_field.grid(row=1, column=0, padx=10)
 cert_browse_button = Button(cert_browse_frame, text="Browse", font=("Helvetica", 12), bg="#003366", fg="white")
 cert_browse_button.grid(row=1, column=1, padx=10, sticky=W)
 
+#get the input of corodinates
 pos_frame = Frame(root, relief=RIDGE, bg="#f4f4f4", width=500, height=80)
 pos_frame.grid(row=3, column=0, pady=10, sticky=W)
 pos_label = Label(pos_frame,text="Enter the Position of the Name on the certificate:",font=("Helvetica", 12, "bold"), bg="#f4f4f4", fg="black")
@@ -74,5 +75,9 @@ y_label.grid(row=1,column=1,pady=5,padx=5,sticky=W)
 y_entry_var = IntVar()
 y_entry_field = Entry(pos_frame, width=15, font=("Helvetica", 12), bg="white", textvariable=y_entry_var,validate="key",validatecommand=(reg,"%P"))
 y_entry_field.grid(row=1,column=1,pady=5,padx=20)
+
+#generates the certificates
+generate_button = Button(root, text="Generate", font=("Helvetica", 20,"bold"), bg="#003366", fg="white")
+generate_button.grid(row=4,column=0,pady=20)
 
 root.mainloop()
