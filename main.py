@@ -19,6 +19,16 @@ def browse_excel_file():
     users_file_path = filedialog.askopenfilename(title="Select a File",filetypes=[("Excel Files", "*.xlsx;*.xls")])
     excel_entry_var.set(users_file_path)
 
+def browse_jpg_file():
+    users_file_path = filedialog.askopenfilename(title="Select a File", filetypes=[("JPG Files", "*.jpg")])
+    cert_entry_var.set(users_file_path)
+
+def check_path_existence(filepath):
+    if os.path.exists(filepath):
+        pass
+    else:
+        messagebox.showerror("Error", "Path doesn't exist!")
+
 def write_name(name):
     cert_path = cert_entry_var.get()
     x = x_entry_var.get()
@@ -26,7 +36,7 @@ def write_name(name):
     if cert_path == "" or x == "" or y == "":
         messagebox.showerror("Error","Write the required fields")
     else:
-        pass
+        check_path_existence(cert_path)
         try:
             temp = cv2.imread(cert_path)
             cv2.putText(temp,name,(x,y),cv2.FONT_HERSHEY_COMPLEX,4,(0,0,0),5,cv2.LINE_AA)
@@ -44,7 +54,7 @@ def generate_certificate():
     if excel_file == "":
         messagebox.showerror("Error","Write the required fields")
     else:  
-        pass
+        check_path_existence(excel_file)
         try:
             wb = load_workbook(excel_file)
             ws=wb.active
@@ -55,10 +65,6 @@ def generate_certificate():
             messagebox.showinfo("Info",f"All Certificates Generated\nOutput Folder:{certificate_folder}")
         except:
             pass
-
-def browse_jpg_file():
-    users_file_path = filedialog.askopenfilename(title="Select a File", filetypes=[("JPG Files", "*.jpg")])
-    cert_entry_var.set(users_file_path)
 
 root = Tk()
 root.title("Certificate Generator")
