@@ -1,5 +1,8 @@
 from tkinter import *
 from tkinter import messagebox,filedialog
+import cv2
+import os
+from openpyxl import *
 
 def validate_num_input(num):  # allows the user to input numbers only in coordinates field  
     if num.isdigit():
@@ -15,6 +18,43 @@ def guide_clicked(event):
 def browse_excel_file():
     users_file_path = filedialog.askopenfilename(title="Select a File",filetypes=[("Excel Files", "*.xlsx;*.xls")])
     excel_entry_var.set(users_file_path)
+
+def write_name(name):
+    cert_path = cert_entry_var.get()
+    x = x_entry_var.get()
+    y = y_entry_var.get()
+    if cert_path == "" or x == "" or y == "":
+        messagebox.showerror("Error","Write the required fields")
+    else:
+        pass
+        try:
+            temp = cv2.imread(cert_path)
+            cv2.putText(temp,name,(x,y),cv2.FONT_HERSHEY_COMPLEX,4,(0,0,0),5,cv2.LINE_AA)
+            downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+            global certificate_folder
+            certificate_folder = os.path.join(downloads_path, "certificate")
+            os.makedirs(certificate_folder, exist_ok=True)
+            output_folder = os.path.join(certificate_folder,f"{name}.jpg")
+            cv2.imwrite(output_folder, temp)
+        except:
+            pass
+
+def generate_certificate():
+    excel_file = excel_entry_var.get()
+    if excel_file == "":
+        messagebox.showerror("Error","Write the required fields")
+    else:  
+        pass
+        try:
+            wb = load_workbook(excel_file)
+            ws=wb.active
+            name_column = ws["A"]
+            for cell in name_column:
+                name = cell.value
+                write_name(name)
+            messagebox.showinfo("Info",f"All Certificates Generated\nOutput Folder:{certificate_folder}")
+        except:
+            pass
 
 def browse_jpg_file():
     users_file_path = filedialog.askopenfilename(title="Select a File", filetypes=[("JPG Files", "*.jpg")])
@@ -85,7 +125,7 @@ y_entry_field = Entry(pos_frame, width=15, font=("Helvetica", 12), bg="white", t
 y_entry_field.grid(row=1,column=1,pady=5,padx=20)
 
 #generates the certificates
-generate_button = Button(root, text="Generate", font=("Helvetica", 20,"bold"), bg="#003366", fg="white")
+generate_button = Button(root, text="Generate", font=("Helvetica", 20,"bold"), bg="#003366", fg="white",command = generate_certificate)
 generate_button.grid(row=4,column=0,pady=20)
 
 root.mainloop()
